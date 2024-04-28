@@ -1,7 +1,7 @@
 export type Universe = Buffer;
 
 export type DriverFactory = (universe: Universe) => Driver;
-export type Driver = () => void;
+export type Driver = () => Promise<void>;
 
 export const UNIVERSE_SIZE = 512;
 export const MAX_VALUE = 255;

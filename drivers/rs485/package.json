@@ -19,7 +19,8 @@
     "@serialport/bindings-cpp": "^12.0.1",
     "@serialport/bindings-interface": "patch:@serialport/bindings-interface@npm%3A1.2.2#~/.yarn/patches/@serialport-bindings-interface-npm-1.2.2-e597dbc676.patch",
     "@types/node": "^20.12.7",
-    "serialport": "^12.0.0"
+    "serialport": "^12.0.0",
+    "set-interval-async": "^3.0.3"
   },
   "devDependencies": {
     "tsup": "^8.0.2",

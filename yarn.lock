@@ -24,6 +24,7 @@ __metadata:
     "@serialport/bindings-interface": "patch:@serialport/bindings-interface@npm%3A1.2.2#~/.yarn/patches/@serialport-bindings-interface-npm-1.2.2-e597dbc676.patch"
     "@types/node": "npm:^20.12.7"
     serialport: "npm:^12.0.0"
+    set-interval-async: "npm:^3.0.3"
     tsup: "npm:^8.0.2"
     typescript: "npm:^5.4.5"
   languageName: unknown
@@ -1825,6 +1826,13 @@ __metadata:
     "@serialport/stream": "npm:12.0.0"
     debug: "npm:4.3.4"
   checksum: 10c0/ad282898055947dd89ebb7ac7433d2961b0bba311a1c7009f2eda1aac9bfd5b1f59e50b30df8e1d3c20c323f05aefd134028bdab1b8f9dde3cbc46b32e9b8765
+  languageName: node
+  linkType: hard
+
+"set-interval-async@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "set-interval-async@npm:3.0.3"
+  checksum: 10c0/7547bb5265648951f3f799391d970f39be16bae2b462ad54b58e96a6a3eb9dda1f183a3b9a4bfdc0a62637b026b494fae74cda075db1c5762b58d0c9172e6d4c
   languageName: node
   linkType: hard
 
