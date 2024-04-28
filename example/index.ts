@@ -7,14 +7,19 @@ const dmx = create(
   })
 );
 
-function blackout() {
-  dmx.updateAll(0);
-}
-
 function strobeOn() {
-  dmx.updateAll(255);
+  dmx.setAll(255);
 }
 
 function strobeOff() {
-  dmx.updateAll(0);
+  dmx.setAll(0);
 }
+
+const strobe = setInterval(() => {
+  strobeOn();
+  setTimeout(strobeOff, 100);
+}, 200);
+
+setTimeout(() => {
+  clearInterval(strobe);
+}, 5000);

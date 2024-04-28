@@ -6,5 +6,8 @@
   "dependencies": {
     "@dmxjs/core": "workspace:^",
     "@dmxjs/driver-rs485": "workspace:^"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
   }
 }
