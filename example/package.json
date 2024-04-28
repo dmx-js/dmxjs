@@ -1,0 +1,10 @@
+{
+  "name": "@dmxjs/example",
+  "private": true,
+  "type": "module",
+  "packageManager": "yarn@4.1.1",
+  "dependencies": {
+    "@dmxjs/core": "workspace:^",
+    "@dmxjs/driver-rs485": "workspace:^"
+  }
+}
