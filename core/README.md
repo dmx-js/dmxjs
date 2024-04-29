@@ -1,1 +1,1 @@
-# core
+# `@dmxjs/core`

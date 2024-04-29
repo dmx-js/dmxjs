@@ -1,1 +1,1 @@
-# shared
+# `@dmxjs/shared`
