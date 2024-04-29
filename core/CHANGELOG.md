@@ -1,5 +1,13 @@
 # @dmxjs/core
 
+## 1.0.5
+
+### Patch Changes
+
+- 977203b: bump bc 1.0.4 didnt deploy for some reason
+- Updated dependencies [977203b]
+  - @dmxjs/shared@1.0.5
+
 ## 1.0.4
 
 ### Patch Changes

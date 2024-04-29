@@ -1,5 +1,11 @@
 # @dmxjs/shared
 
+## 1.0.5
+
+### Patch Changes
+
+- 977203b: bump bc 1.0.4 didnt deploy for some reason
+
 ## 1.0.4
 
 ### Patch Changes
