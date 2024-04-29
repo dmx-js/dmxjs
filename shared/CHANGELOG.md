@@ -1,5 +1,11 @@
 # @dmxjs/shared
 
+## 1.0.3
+
+### Patch Changes
+
+- b4adb44: Fix publishing to use correct dependency values
+
 ## 1.0.2
 
 ### Patch Changes
