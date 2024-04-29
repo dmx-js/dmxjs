@@ -1,5 +1,11 @@
 # @dmxjs/shared
 
+## 1.0.4
+
+### Patch Changes
+
+- ce0e484: Add readmes
+
 ## 1.0.3
 
 ### Patch Changes
