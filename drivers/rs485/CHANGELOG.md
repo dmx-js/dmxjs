@@ -1,5 +1,13 @@
 # @dmxjs/driver-rs485
 
+## 1.0.4
+
+### Patch Changes
+
+- ce0e484: Add readmes
+- Updated dependencies [ce0e484]
+  - @dmxjs/shared@1.0.4
+
 ## 1.0.3
 
 ### Patch Changes
