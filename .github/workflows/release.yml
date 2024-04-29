@@ -9,6 +9,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   release:
@@ -27,7 +28,6 @@ jobs:
         run: yarn
 
       - name: Publish
-        id: changesets
         uses: changesets/action@v1
         with:
           publish: yarn release
