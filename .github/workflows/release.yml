@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js 222
+      - name: Setup Node.js 22
         uses: actions/setup-node@v3
         with:
           node-version: 22
@@ -24,6 +24,7 @@ jobs:
         run: yarn
 
       - name: Publish
+        id: changesets
         uses: changesets/action@v1
         with:
           publish: yarn release
