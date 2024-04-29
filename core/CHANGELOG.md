@@ -1,5 +1,13 @@
 # @dmxjs/core
 
+## 1.0.3
+
+### Patch Changes
+
+- b4adb44: Fix publishing to use correct dependency values
+- Updated dependencies [b4adb44]
+  - @dmxjs/shared@1.0.3
+
 ## 1.0.2
 
 ### Patch Changes
