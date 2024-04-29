@@ -20,7 +20,8 @@
   ],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "release": "yarn npm publish"
   },
   "devDependencies": {
     "tsup": "^8.0.2",

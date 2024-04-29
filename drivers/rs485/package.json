@@ -20,7 +20,8 @@
   ],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "release": "yarn npm publish"
   },
   "dependencies": {
     "@dmxjs/shared": "workspace:^",

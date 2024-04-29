@@ -27,10 +27,16 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
-      - name: Publish
+      - name: Run Changesets
+        id: changesets
         uses: changesets/action@v1
         with:
           publish: yarn release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish
+        if: steps.changesets.outputs.hasChangesets == 'false'
+        run: yarn release
+        env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
