@@ -1,5 +1,13 @@
 # @dmxjs/core
 
+## 1.0.6
+
+### Patch Changes
+
+- 34f6573: Fix rs485 impl
+- Updated dependencies [34f6573]
+  - @dmxjs/shared@1.0.6
+
 ## 1.0.5
 
 ### Patch Changes
