@@ -5,7 +5,8 @@
   "packageManager": "yarn@4.1.1",
   "dependencies": {
     "@dmxjs/core": "workspace:^",
-    "@dmxjs/driver-rs485": "workspace:^"
+    "@dmxjs/driver-rs485": "workspace:^",
+    "tsx": "^4.7.3"
   },
   "devDependencies": {
     "typescript": "^5.4.5"

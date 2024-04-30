@@ -4,7 +4,6 @@
     "module": "Preserve",
     "target": "ESNext",
     "strict": true,
-    "noEmit": true,
     "useUnknownInCatchVariables": true,
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
@@ -13,10 +12,11 @@
     "exactOptionalPropertyTypes": true,
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
-    "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "allowJs": false,
-    "lib": ["ESNext", "Dom", "DOM.Iterable"]
+    "lib": ["ESNext", "Dom", "DOM.Iterable"],
+    "rootDir": "src",
+    "outDir": "dist"
   },
-  "exclude": ["./dist"]
+  "include": ["./src/**/*.ts"]
 }

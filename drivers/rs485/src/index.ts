@@ -1,4 +1,5 @@
 import { createAsyncLock, type DriverFactory } from "@dmxjs/shared";
+import type { SetOptions } from "@serialport/bindings-interface";
 import { setTimeout as sleep } from "node:timers/promises";
 import { SerialPort } from "serialport";
 import { clearIntervalAsync, setIntervalAsync } from "set-interval-async";
@@ -14,7 +15,9 @@ export function rs485({
   interval = 30,
 }: RS485Options = {}): DriverFactory {
   if (!path) {
-    throw new Error("Path autodetection in RS485 is not implemented yet");
+    throw new Error(
+      "Path autodetection in RS485 is not implemented yet. For now, please pass `.path`"
+    );
   }
 
   return (universe) => {
@@ -26,10 +29,11 @@ export function rs485({
       dataBits: 8,
       stopBits: 2,
       parity: "none",
-      autoOpen: true,
     });
 
-    const set = promisify(port.set);
+    const set = promisify((options: SetOptions, callback: () => void) =>
+      port.set(options, callback)
+    );
 
     const write = (buf: Buffer) => {
       return new Promise<void>((resolve, reject) => {
@@ -57,7 +61,7 @@ export function rs485({
     }, interval);
 
     return async () => {
-      clearIntervalAsync(timer);
+      await clearIntervalAsync(timer);
     };
   };
 }

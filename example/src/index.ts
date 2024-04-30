@@ -3,7 +3,7 @@ import { rs485 } from "@dmxjs/driver-rs485";
 
 const dmx = create(
   rs485({
-    path: "/dev/ttyUSB0",
+    path: "/dev/tty.usbserial-B001TY53",
   })
 );
 
