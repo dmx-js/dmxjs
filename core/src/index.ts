@@ -1,8 +1,7 @@
-import type { DriverFactory } from "@dmxjs/shared";
-import { MAX_VALUE, UNIVERSE_SIZE } from "@dmxjs/shared";
+import { MAX_VALUE, UNIVERSE_SIZE, type DriverFactory } from "@dmxjs/shared";
 
 export function create(factory: DriverFactory) {
-  const universe = Buffer.alloc(512 + 1, 0);
+  const universe = Buffer.alloc(UNIVERSE_SIZE + 1, 0);
   const stop = factory(universe);
 
   return {

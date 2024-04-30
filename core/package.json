@@ -1,8 +1,11 @@
 {
   "name": "@dmxjs/core",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "packageManager": "yarn@4.1.1",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -10,9 +13,15 @@
       "require": "./dist/index.cjs"
     }
   },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "release": "yarn npm publish"
   },
   "dependencies": {
     "@dmxjs/shared": "workspace:^"

@@ -1,6 +1,7 @@
 import { createAsyncLock, type DriverFactory } from "@dmxjs/shared";
 import { setTimeout as sleep } from "node:timers/promises";
 import { SerialPort } from "serialport";
+import { clearIntervalAsync, setIntervalAsync } from "set-interval-async";
 import { promisify } from "util";
 
 export interface RS485Options {
@@ -40,23 +41,23 @@ export function rs485({
     };
 
     const commit = async () => {
-      await lock.run(async () => {
-        await set({ brk: true, rts: true });
-        await sleep(1); // MAB Duration
-        await set({ brk: false, rts: true });
+      await set({ brk: true, rts: true });
+      await sleep(1); // MAB Duration
+      await set({ brk: false, rts: true });
 
-        await write(universe);
+      await write(universe);
 
-        return new Promise<void>((resolve) => {
-          port.drain(() => resolve());
-        });
+      return new Promise<void>((resolve) => {
+        port.drain(() => resolve());
       });
     };
 
-    const timer = setInterval(commit, interval);
+    const timer = setIntervalAsync(async () => {
+      await lock.run(commit);
+    }, interval);
 
-    return () => {
-      clearTimeout(timer);
+    return async () => {
+      clearIntervalAsync(timer);
     };
   };
 }
