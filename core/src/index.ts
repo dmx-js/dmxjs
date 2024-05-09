@@ -1,6 +1,13 @@
 import { MAX_VALUE, UNIVERSE_SIZE, type DriverFactory } from "@dmxjs/shared";
 
-export function create(factory: DriverFactory) {
+export interface UniverseController {
+  setAll: (value: number) => void;
+  set: (channel: number, value: number) => void;
+  get: (channel: number) => number;
+  stop: () => Promise<void>;
+}
+
+export function create(factory: DriverFactory): UniverseController {
   const universe = Buffer.alloc(UNIVERSE_SIZE + 1, 0);
   const stop = factory(universe);
 

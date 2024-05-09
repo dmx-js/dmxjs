@@ -1,0 +1,33 @@
+{
+  "name": "@dmxjs/driver-dummy",
+  "version": "0.0.1",
+  "packageManager": "yarn@4.1.1",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "release": "yarn npm publish"
+  },
+  "dependencies": {
+    "@dmxjs/shared": "workspace:^"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
+  }
+}

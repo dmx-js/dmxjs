@@ -314,6 +314,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@dmxjs/fixtures@workspace:fixtures":
+  version: 0.0.0-use.local
+  resolution: "@dmxjs/fixtures@workspace:fixtures"
+  dependencies:
+    tsup: "npm:^8.0.2"
+    typescript: "npm:^5.4.5"
+  languageName: unknown
+  linkType: soft
+
+"@dmxjs/music@workspace:music":
+  version: 0.0.0-use.local
+  resolution: "@dmxjs/music@workspace:music"
+  dependencies:
+    "@dmxjs/core": "workspace:^"
+    "@dmxjs/driver-rs485": "workspace:^"
+    "@dmxjs/shared": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
 "@dmxjs/shared@workspace:^, @dmxjs/shared@workspace:shared":
   version: 0.0.0-use.local
   resolution: "@dmxjs/shared@workspace:shared"

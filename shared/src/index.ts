@@ -66,3 +66,39 @@ export function createAsyncLock() {
     },
   };
 }
+
+export class TypedMap<T extends Record<PropertyKey, unknown>> {
+  private readonly map = new Map<keyof T, T[keyof T]>();
+
+  public set<K extends keyof T>(key: K, value: T[K]) {
+    this.map.set(key, value);
+  }
+
+  public get<K extends keyof T>(key: K): T[K] | undefined {
+    return this.map.get(key) as T[K];
+  }
+
+  public delete<K extends keyof T>(key: K) {
+    return this.map.delete(key);
+  }
+
+  public has<K extends keyof T>(key: K) {
+    return this.map.has(key);
+  }
+
+  public clear() {
+    this.map.clear();
+  }
+
+  public values() {
+    return this.map.values();
+  }
+
+  public keys() {
+    return this.map.keys();
+  }
+
+  public entries() {
+    return this.map.entries();
+  }
+}

@@ -6,7 +6,9 @@
     "./drivers/*",
     "./core",
     "./shared",
-    "./example"
+    "./example",
+    "./fixtures",
+    "./music"
   ],
   "scripts": {
     "dev": "turbo dev",
