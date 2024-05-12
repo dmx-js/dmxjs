@@ -7,21 +7,21 @@ import type {MusicContext} from './music-context.ts';
 export class Controller {
 	private readonly universe: UniverseController;
 
+	private context: MusicContext | null;
+
 	public constructor(
 		universe: UniverseController,
 		public readonly fixtures: readonly Fixture<MusicContext, any>[],
 	) {
 		this.universe = universe;
+		this.context = null;
 
-		let totalChannelCount = 0;
-
-		for (const fixture of fixtures) {
-			totalChannelCount += fixture.channels;
-
-			if (totalChannelCount > UNIVERSE_SIZE) {
-				throw new Error('Too many channels specified for universe size');
-			}
+		const channelCount = fixtures.reduce((acc, fixture) => acc + fixture.channels, 0);
+		if (channelCount > UNIVERSE_SIZE) {
+			throw new Error('Too many channels specified for universe size');
 		}
+
+		this.startLoop();
 	}
 
 	emit<K extends keyof FixtureEvents>(key: K, ...args: FixtureEvents[K]) {
@@ -31,8 +31,32 @@ export class Controller {
 			}
 		}
 
-		const states = this.fixtures.map(fixture => fixture.render(args[0]));
+		this.context = args[0];
 
+		// const states = this.fixtures.map(fixture => fixture.render(args[0]));
+		//
+		// const concatenated = Buffer.concat(states);
+		//
+		// for (let i = 0; i < concatenated.length; i++) {
+		// 	this.universe.set(i + 1, concatenated[i]!);
+		// }
+	}
+
+	private startLoop() {
+		setInterval(() => {
+			this.render();
+		}, 1000 / 60); // 60fps
+	}
+
+	private render() {
+		if (!this.context) {
+			return; // No context yet, we don't want to start rendering
+		}
+
+		const context = this.context;
+
+		// TODO: figure out the most efficient way to do all this
+		const states = this.fixtures.map(fixture => fixture.render(context));
 		const concatenated = Buffer.concat(states);
 
 		for (let i = 0; i < concatenated.length; i++) {

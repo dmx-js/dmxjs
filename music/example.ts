@@ -9,7 +9,11 @@ import {MiniKintaILSDownBeatFlash} from './test-effect.ts';
 const path = await autodetect();
 console.log('Using path', path);
 
-const dmx = create(rs485(path));
+const dmx = create(
+	rs485(path, {
+		interval: 1000 / 60,
+	}),
+);
 
 const controller = new Controller(dmx, [new MiniKintaILSDownBeatFlash()]);
 
