@@ -6,7 +6,7 @@ import type {EnumSelectable, LightingComponent, MultiEnumSelectable} from '../co
 type MiniKintaFrame = [number, number, number, number];
 type MiniKintaColorOption = 'red' | 'green' | 'blue' | 'white';
 
-const MiniKintaILSEnumMapping = {
+const ColorEnumMapping = {
 	off: 0,
 	red: 10,
 	green: 25,
@@ -28,7 +28,7 @@ const MiniKintaILSEnumMapping = {
 } as const;
 
 type Selectables = {
-	color: keyof typeof MiniKintaILSEnumMapping;
+	color: keyof typeof ColorEnumMapping;
 };
 
 type MultiEnumSelectables = {
@@ -65,6 +65,53 @@ export abstract class MiniKintaILS<Context>
 		}
 
 		this.setOptions(frame, 'color', Array.from(options));
+	}
+
+	/**
+	 * @param frame data frame
+	 * @param speed float 0 -> 1
+	 */
+	setStrobe(frame: MiniKintaFrame, speed: number) {
+		if (speed < 0 || speed > 1) {
+			throw new Error('Speed percentage must be between 0 and 1');
+		}
+
+		if (speed === 0) {
+			frame[1] = 0;
+			return;
+		}
+
+		frame[1] = Math.floor(speed * (255 - 128)) + 128;
+	}
+
+	/**
+	 * @param frame data frame
+	 * @param index Between 0 and 126
+	 */
+	setMotorIndex(frame: MiniKintaFrame, index: number) {
+		if (index <= 0 || index > 127) {
+			throw new Error('Motor index must be between 0 and 126');
+		}
+
+		// Starts at an offset of 1
+		frame[2] = index + 1;
+	}
+
+	/**
+	 * @param frame data frame
+	 * @param speed float 0 -> 1
+	 */
+	setMotorSpeed(frame: MiniKintaFrame, speed: number) {
+		if (speed < 0 || speed > 1) {
+			throw new Error('Speed percentage must be between 0 and 1');
+		}
+
+		if (speed === 0) {
+			frame[2] = 0;
+			return;
+		}
+
+		frame[2] = Math.floor(speed * (255 - 128)) + 128;
 	}
 
 	setOptions<K extends keyof MultiEnumSelectables>(
@@ -167,7 +214,7 @@ export abstract class MiniKintaILS<Context>
 	) {
 		switch (channel) {
 			case 'color': {
-				frame[0] = MiniKintaILSEnumMapping[option];
+				frame[0] = ColorEnumMapping[option];
 				break;
 			}
 
