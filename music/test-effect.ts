@@ -15,8 +15,10 @@ export class MiniKintaILSDownBeatFlash extends MiniKintaILS<MusicContext> {
 		// \frac{\left(\sin\left(\frac{x}{5-\left(z-1\right)}\right)+1\right)}{2}
 
 		const speed = (Math.sin(ctx.beatInMeasure / (5 - (ctx.energy - 1))) + 1) / 2;
-		const index = Math.floor(speed * 126);
-		this.setMotorIndex(frame, index);
+		// const index = Math.floor(speed * 126);
+		this.setMotorSpeed(frame, speed);
+
+		console.log(speed);
 
 		return this.toBuffer(frame);
 	}
