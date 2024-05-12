@@ -1,12 +1,12 @@
-import { create } from '@dmxjs/core';
-import { autodetect, rs485 } from '@dmxjs/driver-rs485';
-import { setTimeout as sleep } from 'node:timers/promises';
-import { add as unload } from 'unload';
-  
-import { Controller } from './src';
-import { MiniKintaILSDownBeatFlash } from './test-effect.ts';
+import {create} from '@dmxjs/core';
+import {autodetect, rs485} from '@dmxjs/driver-rs485';
+import {setTimeout as sleep} from 'node:timers/promises';
+import {add as unload} from 'unload';
 
-const path = await autodetect();  
+import {Controller} from './src';
+import {MiniKintaILSDownBeatFlash} from './test-effect.ts';
+
+const path = await autodetect();
 console.log('Using path', path);
 
 const dmx = create(

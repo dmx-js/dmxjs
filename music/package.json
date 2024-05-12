@@ -1,18 +1,18 @@
 {
-  "name": "@dmxjs/music",
-  "version": "0.0.1",
-  "packageManager": "yarn@4.1.1",
-  "type": "module",
-  "scripts": {
-    "example": "node --import=tsx example.ts"
-  },
-  "dependencies": {
-    "@dmxjs/core": "workspace:^",
-    "@dmxjs/shared": "workspace:^"
-  },
-  "devDependencies": {
-    "@dmxjs/driver-dummy": "workspace:^",
-    "tsx": "npm:^4.7.3",
-    "unload": "^2.4.1"
-  }
+	"name": "@dmxjs/music",
+	"version": "0.0.1",
+	"packageManager": "yarn@4.1.1",
+	"type": "module",
+	"scripts": {
+		"example": "node --import=tsx example.ts"
+	},
+	"dependencies": {
+		"@dmxjs/core": "workspace:^",
+		"@dmxjs/shared": "workspace:^"
+	},
+	"devDependencies": {
+		"@dmxjs/driver-dummy": "workspace:^",
+		"tsx": "npm:^4.7.3",
+		"unload": "^2.4.1"
+	}
 }

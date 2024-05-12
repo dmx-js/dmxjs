@@ -23,14 +23,14 @@ export function deferred<T>(): {
 }
 
 export function sleep(ms: number) {
-  return new Promise<void>((resolve) => setTimeout(resolve, ms));
+	return new Promise<void>(resolve => setTimeout(resolve, ms));
 }
 
 export function promiseWithTimeout<R>(ms: number, promise: Promise<R>) {
-  return Promise.race([
-    promise.then((value) => ({ state: "resolved" as const, value })),
-    sleep(ms).then(() => ({ state: "timeout" as const })),
-  ]);
+	return Promise.race([
+		promise.then(value => ({state: 'resolved' as const, value})),
+		sleep(ms).then(() => ({state: 'timeout' as const})),
+	]);
 }
 
 export class TypedMap<T extends Record<PropertyKey, unknown>> {
