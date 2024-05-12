@@ -15,11 +15,13 @@ export interface DummyOptions {
 export function dummy({ interval = 5_000 }: DummyOptions = {}): DriverFactory {
   return (universe) => {
     const timer = setInterval(() => {
-      console.log(universe);
+      console.log("[dummy]", universe.length, universe);
     }, interval);
 
-    return async () => {
-      clearInterval(timer);
+    return {
+      stop: async () => {
+        clearInterval(timer);
+      },
     };
   };
 }

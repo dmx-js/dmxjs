@@ -6,9 +6,3 @@ export const MiniKintaILS4Channel = fixture({
   manufacturer: Manufacturer.CHAUVET_DJ,
   channels: 4,
 });
-
-export const MiniKintaILS8Channel = fixture({
-  name: "Mini Kinta ILS (8 channel)",
-  manufacturer: Manufacturer.CHAUVET_DJ,
-  channels: 8,
-});

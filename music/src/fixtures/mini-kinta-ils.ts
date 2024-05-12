@@ -1,18 +1,16 @@
-import type { Context } from "../context";
+import { FourFour, type Context } from "../context";
 import { Fixture } from "../fixture";
 
-export class MiniKintaILS4Channel extends Fixture {
+export class MiniKintaILS extends Fixture {
   public constructor() {
     super("Mini Kinta ILS", 4);
   }
 
-  public accept(state: Context) {
-    if (state.beatInMeasure % 4 === 1) {
-      return Buffer.from([255, 255, 255, 255]);
-      // return Buffer.from([216, 0, 10, 0]);
+  public accept(ctx: Context) {
+    if (FourFour.isDownbeat(ctx)) {
+      return Buffer.from([30, 0, 0, 0]);
     } else {
-      return Buffer.from([255, 255, 255, 255]);
-      // return Buffer.from([0, 0, 10, 0]);
+      return Buffer.from([240, 255, 0, 0]);
     }
   }
 }

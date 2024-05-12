@@ -1,7 +1,9 @@
 export type Universe = Buffer;
 
 export type DriverFactory = (universe: Universe) => Driver;
-export type Driver = () => Promise<void>;
+export type Driver = {
+  stop: () => Promise<void>;
+};
 
 export const UNIVERSE_SIZE = 512;
 export const MAX_VALUE = 255;
@@ -101,4 +103,18 @@ export class TypedMap<T extends Record<PropertyKey, unknown>> {
   public entries() {
     return this.map.entries();
   }
+}
+
+export function printUniverse(universe: Universe) {
+  const objectOfNonZeroValues: Record<number, number> = {};
+
+  for (let i = 0; i < universe.length; i++) {
+    const value = universe[i];
+
+    if (value !== undefined && value !== 0) {
+      objectOfNonZeroValues[i] = value;
+    }
+  }
+
+  console.table(objectOfNonZeroValues);
 }

@@ -1,24 +1,54 @@
 import { createAsyncLock, type DriverFactory } from "@dmxjs/shared";
 import type { SetOptions } from "@serialport/bindings-interface";
+import * as os from "node:os";
 import { setTimeout as sleep } from "node:timers/promises";
 import { SerialPort } from "serialport";
 import { clearIntervalAsync, setIntervalAsync } from "set-interval-async";
 import { promisify } from "util";
 
 export interface RS485Options {
-  path?: string;
+  /**
+   * The interval in milliseconds to send the DMX signal. Defaults to 30ms.
+   * @warning Often Node.js is not able to set timers with such accuracy. While you can absolutely try to set this to 1ms, there's absolutely zero guarantee that your system will be able to keep up with that.
+   */
   interval?: number;
 }
 
-export function rs485({
-  path,
-  interval = 30,
-}: RS485Options = {}): DriverFactory {
-  if (!path) {
-    throw new Error(
-      "Path autodetection in RS485 is not implemented yet. For now, please pass `.path`"
-    );
+/**
+ * Attempts to automatically guess the path
+ */
+export async function autodetect(): Promise<string> {
+  const ports = await SerialPort.list();
+
+  const platform = os.platform();
+
+  const port = ports.find((port) => {
+    if (platform === "darwin") {
+      return port.path.includes("usbserial");
+    } else if (platform === "linux") {
+      return port.path.includes("ttyUSB");
+    } else if (platform === "win32") {
+      return port.path.includes("COM");
+    } else {
+      return false;
+    }
+  });
+
+  if (!port) {
+    throw new Error("No serial port found");
   }
+
+  return port.path;
+}
+
+/**
+ * Creates a driver factory for the RS485 protocol
+ * @param path The path to the serial port
+ * @param options The options for the driver
+ * @returns A driver factory
+ */
+export function rs485(path: string, options: RS485Options = {}): DriverFactory {
+  const { interval = 30 } = options;
 
   return (universe) => {
     const lock = createAsyncLock();
@@ -35,23 +65,19 @@ export function rs485({
       port.set(options, callback)
     );
 
-    const write = (buf: Buffer) => {
-      return new Promise<void>((resolve, reject) => {
-        port.write(buf, (err) => {
-          if (err) reject(err);
-          else resolve();
-        });
-      });
-    };
-
     const commit = async () => {
       await set({ brk: true, rts: true });
       await sleep(1); // MAB Duration
       await set({ brk: false, rts: true });
 
-      await write(universe);
+      // prettier-ignore
+      const joined = Buffer.concat([  
+        Buffer.from([0]),
+        universe,
+      ]);
 
       return new Promise<void>((resolve) => {
+        port.write(joined, "binary");
         port.drain(() => resolve());
       });
     };
@@ -60,8 +86,10 @@ export function rs485({
       await lock.run(commit);
     }, interval);
 
-    return async () => {
-      await clearIntervalAsync(timer);
+    return {
+      stop: async () => {
+        await clearIntervalAsync(timer);
+      },
     };
   };
 }

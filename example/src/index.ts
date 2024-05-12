@@ -1,11 +1,9 @@
 import { create } from "@dmxjs/core";
-import { rs485 } from "@dmxjs/driver-rs485";
+import { autodetect, rs485 } from "@dmxjs/driver-rs485";
 
-const dmx = create(
-  rs485({
-    path: "/dev/tty.usbserial-B001TY53",
-  })
-);
+const path = await autodetect();
+
+const dmx = create(rs485(path));
 
 function strobeOn() {
   dmx.setAll(255);

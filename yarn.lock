@@ -288,6 +288,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@dmxjs/driver-dummy@workspace:^, @dmxjs/driver-dummy@workspace:drivers/dummy":
+  version: 0.0.0-use.local
+  resolution: "@dmxjs/driver-dummy@workspace:drivers/dummy"
+  dependencies:
+    "@dmxjs/shared": "workspace:^"
+    tsup: "npm:^8.0.2"
+    typescript: "npm:^5.4.5"
+  languageName: unknown
+  linkType: soft
+
 "@dmxjs/driver-rs485@workspace:^, @dmxjs/driver-rs485@workspace:drivers/rs485":
   version: 0.0.0-use.local
   resolution: "@dmxjs/driver-rs485@workspace:drivers/rs485"
@@ -308,6 +318,7 @@ __metadata:
   resolution: "@dmxjs/example@workspace:example"
   dependencies:
     "@dmxjs/core": "workspace:^"
+    "@dmxjs/driver-dummy": "workspace:^"
     "@dmxjs/driver-rs485": "workspace:^"
     tsx: "npm:^4.7.3"
     typescript: "npm:^5.4.5"
@@ -328,8 +339,10 @@ __metadata:
   resolution: "@dmxjs/music@workspace:music"
   dependencies:
     "@dmxjs/core": "workspace:^"
-    "@dmxjs/driver-rs485": "workspace:^"
+    "@dmxjs/driver-dummy": "workspace:^"
     "@dmxjs/shared": "workspace:^"
+    tsx: "npm:^4.7.3"
+    unload: "npm:^2.4.1"
   languageName: unknown
   linkType: soft
 
@@ -4364,6 +4377,13 @@ __metadata:
   version: 0.1.2
   resolution: "universalify@npm:0.1.2"
   checksum: 10c0/e70e0339f6b36f34c9816f6bf9662372bd241714dc77508d231d08386d94f2c4aa1ba1318614f92015f40d45aae1b9075cd30bd490efbe39387b60a76ca3f045
+  languageName: node
+  linkType: hard
+
+"unload@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "unload@npm:2.4.1"
+  checksum: 10c0/98bb7f276a217afc51b9ee330610a04324e4718649451b6068667a2b2f77504cdde54d344e80d2fc2843cf431e6c2ec8d57786551f296b03b51eaaca7cbdbe36
   languageName: node
   linkType: hard
 

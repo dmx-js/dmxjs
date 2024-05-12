@@ -13,3 +13,16 @@ export interface Context {
   energy: Energy;
   bpm: number;
 }
+
+/**
+ * Utilities for working with 4/4 time signatures
+ */
+export const FourFour = {
+  isBeatN(context: Context, beat: 1 | 2 | 3 | 4) {
+    return context.beatInMeasure % 4 === beat;
+  },
+
+  isDownbeat(context: Context) {
+    return this.isBeatN(context, 1);
+  },
+};
