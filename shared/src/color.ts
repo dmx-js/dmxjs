@@ -86,4 +86,12 @@ export class Color {
 	static interpolate(a: Color, b: Color, factor: number): Color {
 		return a.scale(1 - factor).add(b.scale(factor));
 	}
+
+	static random(): Color {
+		return new Color(
+			Math.floor(Math.random() * 256),
+			Math.floor(Math.random() * 256),
+			Math.floor(Math.random() * 256),
+		);
+	}
 }
