@@ -1,44 +1,45 @@
-import { type DriverFactory } from "@dmxjs/shared";
-import type { SetOptions } from "@serialport/bindings-interface";
-import * as os from "node:os";
-import { setTimeout as sleep } from "node:timers/promises";
-import { SerialPort } from "serialport";
-import { clearIntervalAsync, setIntervalAsync } from "set-interval-async";
-import { promisify } from "util";
+import {type DriverFactory} from '@dmxjs/shared';
+import type {SetOptions} from '@serialport/bindings-interface';
+import * as os from 'node:os';
+import {setTimeout as sleep} from 'node:timers/promises';
+import {SerialPort} from 'serialport';
+import {clearIntervalAsync, setIntervalAsync} from 'set-interval-async';
+import {promisify} from 'util';
+import {createRs485Worker} from './worker-manager.ts';
 
 export interface RS485Options {
-  /**
-   * The interval in milliseconds to send the DMX signal. Defaults to 30ms.
-   * @warning Often Node.js is not able to set timers with such accuracy. While you can absolutely try to set this to 1ms, there's absolutely zero guarantee that your system will be able to keep up with that.
-   */
-  interval?: number;
+	/**
+	 * The interval in milliseconds to send the DMX signal. Defaults to 30ms.
+	 * @warning Often Node.js is not able to set timers with such accuracy. While you can absolutely try to set this to 1ms, there's absolutely zero guarantee that your system will be able to keep up with that.
+	 */
+	interval?: number;
 }
 
 /**
  * Attempts to automatically guess the path
  */
 export async function autodetect(): Promise<string> {
-  const ports = await SerialPort.list();
+	const ports = await SerialPort.list();
 
-  const platform = os.platform();
+	const platform = os.platform();
 
-  const port = ports.find((port) => {
-    if (platform === "darwin") {
-      return port.path.includes("usbserial");
-    } else if (platform === "linux") {
-      return port.path.includes("ttyUSB");
-    } else if (platform === "win32") {
-      return port.path.includes("COM");
-    } else {
-      return false;
-    }
-  });
+	const port = ports.find(port => {
+		if (platform === 'darwin') {
+			return port.path.includes('usbserial');
+		} else if (platform === 'linux') {
+			return port.path.includes('ttyUSB');
+		} else if (platform === 'win32') {
+			return port.path.includes('COM');
+		} else {
+			return false;
+		}
+	});
 
-  if (!port) {
-    throw new Error("No serial port found");
-  }
+	if (!port) {
+		throw new Error('No serial port found');
+	}
 
-  return port.path;
+	return port.path;
 }
 
 /**
@@ -48,60 +49,62 @@ export async function autodetect(): Promise<string> {
  * @returns A driver factory
  */
 export function rs485(path: string, options: RS485Options = {}): DriverFactory {
-  const { interval = 30 } = options;
+	createRs485Worker(path);
 
-  return (universe) => {
-    const port = new SerialPort({
-      path,
-      baudRate: 250000,
-      dataBits: 8,
-      stopBits: 2,
-      parity: "none",
-    });
+	const {interval = 30} = options;
 
-    const set = promisify((options: SetOptions, callback: () => void) =>
-      port.set(options, callback)
-    );
+	return universe => {
+		const port = new SerialPort({
+			path,
+			baudRate: 250000,
+			dataBits: 8,
+			stopBits: 2,
+			parity: 'none',
+		});
 
-    let isWriting = false;
+		const set = promisify((options: SetOptions, callback: () => void) =>
+			port.set(options, callback),
+		);
 
-    const commit = async () => {
-      await set({ brk: true, rts: true });
-      await sleep(1); // MAB Duration
-      await set({ brk: false, rts: true });
+		let isWriting = false;
 
-      // prettier-ignore
-      const joined = Buffer.concat([ 
+		const commit = async () => {
+			await set({brk: true, rts: true});
+			await sleep(1); // MAB Duration
+			await set({brk: false, rts: true});
+
+			// prettier-ignore
+			const joined = Buffer.concat([ 
         Buffer.from([0]),
         universe,
       ]);
 
-      return new Promise<void>((resolve) => {
-        port.write(joined, "binary");
-        port.drain(() => resolve());
-      });
-    };
+			return new Promise<void>(resolve => {
+				port.write(joined, 'binary');
+				port.drain(() => resolve());
+			});
+		};
 
-    const timer = setIntervalAsync(async () => {
-      if (isWriting) {
-        return;
-      }
+		const timer = setIntervalAsync(async () => {
+			if (isWriting) {
+				return;
+			}
 
-      isWriting = true;
+			isWriting = true;
 
-      try {
-        await commit();
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        isWriting = false;
-      }
-    }, interval);
+			try {
+				await commit();
+			} catch (e) {
+				console.warn(e);
+			} finally {
+				isWriting = false;
+			}
+		}, interval);
 
-    return {
-      stop: async () => {
-        await clearIntervalAsync(timer);
-      },
-    };
-  };
+		return {
+			stop: async () => {
+				await clearIntervalAsync(timer);
+			},
+		};
+	};
 }
