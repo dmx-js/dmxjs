@@ -7,6 +7,11 @@ export function createRs485Worker(path: string) {
 		},
 	});
 
+	// Print all stdout from the worker
+	worker.stdout.pipe(process.stdout);
+	// Print all stderr from the worker
+	worker.stderr.pipe(process.stderr);
+
 	return {
 		set: (channel: number, value: number) => {
 			worker.postMessage({type: 'set', channel, value});
