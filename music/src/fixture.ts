@@ -5,6 +5,13 @@ export abstract class Fixture {
   public readonly name: string;
   public readonly channels: number;
 
+  protected static matchEnergy<R>(
+    context: Context,
+    matches: [() => R, () => R, () => R, () => R, () => R]
+  ) {
+    return matches[context.energy - 1]!();
+  }
+
   protected constructor(name: string, channels: number) {
     this.name = name;
     this.channels = channels;

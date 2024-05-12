@@ -3,7 +3,7 @@ import { autodetect, rs485 } from "@dmxjs/driver-rs485";
 import { setTimeout as sleep } from "node:timers/promises";
 import { add as unload } from "unload";
 
-import { Controller, Energy, Fixtures } from "./src/index.ts";
+import { Controller, Fixtures } from "./src/index.ts";
 
 const path = await autodetect();
 console.log("Using path", path);
@@ -12,17 +12,21 @@ const dmx = create(rs485(path));
 
 const controller = new Controller(dmx, [new Fixtures.MiniKintaILS()]);
 
-const bpm = 170;
+const bpm = 130;
+
 let beat = 0;
 
 const timer = setInterval(() => {
   beat++;
 
+  // Scale to a value of 1-5 for the energy. Maybe go up every 32 beats until we reach 5, then back down
+  const energy = Math.floor((Math.sin(beat / 32) + 1) * 2.5) + 1;
+
   controller.emit("beat", {
     beatInMeasure: (beat % 4) + 1,
     beatInSong: beat + 1,
     measure: Math.floor(beat / 4),
-    energy: Energy.MEDIUM,
+    energy,
     bpm: 120,
   });
 }, 60_000 / bpm);

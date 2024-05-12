@@ -1,9 +1,20 @@
 export enum Energy {
   AMBIENT = 1,
-  LOW = 2,
-  MEDIUM = 3,
-  HIGH = 4,
-  BONKERS = 5,
+  LOW,
+  MEDIUM,
+  HIGH,
+  BONKERS,
+}
+
+export enum ColorOverride {
+  RED = 1,
+  GREEN,
+  BLUE,
+  YELLOW,
+  CYAN,
+  MAGENTA,
+  WHITE,
+  BLACKOUT,
 }
 
 export interface Context {
@@ -12,6 +23,7 @@ export interface Context {
   measure: number;
   energy: Energy;
   bpm: number;
+  override?: ColorOverride;
 }
 
 /**
@@ -24,5 +36,9 @@ export const FourFour = {
 
   isDownbeat(context: Context) {
     return this.isBeatN(context, 1);
+  },
+
+  isUpbeat(context: Context) {
+    return this.isBeatN(context, 4);
   },
 };

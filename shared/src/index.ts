@@ -9,6 +9,7 @@ export const UNIVERSE_SIZE = 512;
 export const MAX_VALUE = 255;
 
 export function deferred<T>(): {
+  wait: () => Promise<T>;
   promise: Promise<T>;
   resolve: (value: T) => void;
 } {
@@ -18,7 +19,7 @@ export function deferred<T>(): {
     resolve = res;
   });
 
-  return { promise, resolve };
+  return { promise, resolve, wait: () => promise };
 }
 
 /**
@@ -117,4 +118,28 @@ export function printUniverse(universe: Universe) {
   }
 
   console.table(objectOfNonZeroValues);
+}
+
+export type Values<T> = T[keyof T];
+
+export function matchLiteral<
+  const T extends PropertyKey,
+  const Handlers extends Readonly<Partial<Record<T, unknown>>>,
+  const R extends [Exclude<T, keyof Handlers>] extends [never]
+    ? []
+    : [defaultValue: unknown]
+>(
+  value: T,
+  handlers: Handlers,
+  ...rest: R
+): (Values<Handlers> & {}) | (R extends [infer V] ? V : never) {
+  if (value in handlers) {
+    return handlers[value] as Values<Handlers> & {};
+  }
+
+  if (rest.length === 1) {
+    return rest[0] as R extends [infer V] ? V : never;
+  }
+
+  throw new Error("No default value specified");
 }
