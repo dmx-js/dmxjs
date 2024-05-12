@@ -10,6 +10,10 @@ export function createRs485Worker(path: string) {
 		stderr: true,
 	});
 
+	worker.on('online', () => {
+		console.log('Worker online');
+	});
+
 	worker.on('error', error => {
 		console.error('Worker error:', error);
 	});
