@@ -1,29 +1,31 @@
 {
-  "name": "dmxjs",
-  "version": "1.0.0",
-  "private": true,
-  "workspaces": [
-    "./drivers/*",
-    "./core",
-    "./shared",
-    "./example",
-    "./fixtures",
-    "./music"
-  ],
-  "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build",
-    "release": "turbo release"
-  },
-  "packageManager": "yarn@4.1.1",
-  "devDependencies": {
-    "@changesets/cli": "^2.27.1",
-    "@yarnpkg/types": "^4.0.0",
-    "alistair": "^1.7.0",
-    "turbo": "^1.13.3"
-  },
-  "resolutions": {
-    "@serialport/bindings-interface@npm:1.2.2": "patch:@serialport/bindings-interface@npm%3A1.2.2#~/.yarn/patches/@serialport-bindings-interface-npm-1.2.2-e597dbc676.patch",
-    "@serialport/bindings-interface@npm:^1.2.1": "patch:@serialport/bindings-interface@npm%3A1.2.2#~/.yarn/patches/@serialport-bindings-interface-npm-1.2.2-e597dbc676.patch"
-  }
+	"name": "dmxjs",
+	"version": "1.0.0",
+	"private": true,
+	"workspaces": [
+		"./drivers/*",
+		"./core",
+		"./shared",
+		"./example",
+		"./fixtures",
+		"./music",
+		"./prolink"
+	],
+	"scripts": {
+		"dev": "turbo dev",
+		"build": "turbo build",
+		"release": "turbo release"
+	},
+	"packageManager": "yarn@4.1.1",
+	"devDependencies": {
+		"@changesets/cli": "^2.27.1",
+		"@yarnpkg/types": "^4.0.0",
+		"alistair": "^1.7.0",
+		"prettier": "^3.2.5",
+		"turbo": "^1.13.3"
+	},
+	"resolutions": {
+		"@serialport/bindings-interface@npm:1.2.2": "patch:@serialport/bindings-interface@npm%3A1.2.2#~/.yarn/patches/@serialport-bindings-interface-npm-1.2.2-e597dbc676.patch",
+		"@serialport/bindings-interface@npm:^1.2.1": "patch:@serialport/bindings-interface@npm%3A1.2.2#~/.yarn/patches/@serialport-bindings-interface-npm-1.2.2-e597dbc676.patch"
+	}
 }

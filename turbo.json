@@ -1,17 +1,17 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist"]
-    },
-    "release": {
-      "dependsOn": ["build"],
-      "cache": false
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    }
-  }
+	"$schema": "https://turbo.build/schema.json",
+	"pipeline": {
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist"]
+		},
+		"release": {
+			"dependsOn": ["build"],
+			"cache": false
+		},
+		"dev": {
+			"cache": false,
+			"persistent": true
+		}
+	}
 }

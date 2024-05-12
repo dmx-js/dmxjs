@@ -1,0 +1,17 @@
+{
+	"name": "@dmxjs/prolink",
+	"version": "0.0.1",
+	"packageManager": "yarn@4.1.1",
+	"type": "module",
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch"
+	},
+	"dependencies": {
+		"@dmxjs/prolink-connect": "^0.11.1",
+		"@dmxjs/shared": "workspace:^"
+	},
+	"devDependencies": {
+		"tsup": "^8.0.2"
+	}
+}

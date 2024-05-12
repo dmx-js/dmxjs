@@ -1,10 +1,10 @@
-import type { DriverFactory } from "@dmxjs/shared";
+import type {DriverFactory} from '@dmxjs/shared';
 
 export interface DummyOptions {
-  /**
-   * An interval in milliseconds at which to log the universe.
-   */
-  interval?: number;
+	/**
+	 * An interval in milliseconds at which to log the universe.
+	 */
+	interval?: number;
 }
 
 /**
@@ -12,16 +12,16 @@ export interface DummyOptions {
  * @param options The options for the dummy driver.
  * @returns A driver factory that logs the universe to the console at a given interval.
  */
-export function dummy({ interval = 5_000 }: DummyOptions = {}): DriverFactory {
-  return (universe) => {
-    const timer = setInterval(() => {
-      console.log("[dummy]", universe.length, universe);
-    }, interval);
+export function dummy({interval = 5_000}: DummyOptions = {}): DriverFactory {
+	return universe => {
+		const timer = setInterval(() => {
+			console.log('[dummy]', universe.length, universe);
+		}, interval);
 
-    return {
-      stop: async () => {
-        clearInterval(timer);
-      },
-    };
-  };
+		return {
+			stop: async () => {
+				clearInterval(timer);
+			},
+		};
+	};
 }

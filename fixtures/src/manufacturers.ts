@@ -1,3 +1,3 @@
 export enum Manufacturer {
-  CHAUVET_DJ = 1,
+	CHAUVET_DJ = 1,
 }
