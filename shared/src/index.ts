@@ -22,54 +22,6 @@ export function deferred<T>(): {
   return { promise, resolve, wait: () => promise };
 }
 
-/**
- * @example
- * ```ts
- * const lock = createAsyncLock();
- *
- * await lock.run(async () => {
- *  //
- * });
- *
- * lock.isLocked(); // false
- *
- * void lock.run(async () => {
- * //
- * });
- *
- * lock.isLocked(); // true
- *
- * await lock.flush();
- *
- * lock.isLocked(); // false
- * ```
- */
-export function createAsyncLock() {
-  let promise: Promise<void> | null = null;
-
-  return {
-    async run<T>(fn: () => Promise<T>): Promise<T> {
-      if (promise) {
-        await promise;
-      }
-
-      const result = await fn().finally(() => {
-        promise = null;
-      });
-
-      return result;
-    },
-    isLocked() {
-      return promise !== null;
-    },
-    flush: async () => {
-      if (promise) {
-        await promise;
-      }
-    },
-  };
-}
-
 export class TypedMap<T extends Record<PropertyKey, unknown>> {
   private readonly map = new Map<keyof T, T[keyof T]>();
 

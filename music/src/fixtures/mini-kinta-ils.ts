@@ -16,8 +16,6 @@ export class MiniKintaILS extends Fixture {
       () => Buffer.from([210, 250, 220, 0]),
     ]);
 
-    console.log({ result });
-
     return result;
   }
 }

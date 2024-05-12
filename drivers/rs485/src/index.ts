@@ -1,4 +1,4 @@
-import { createAsyncLock, type DriverFactory } from "@dmxjs/shared";
+import { type DriverFactory } from "@dmxjs/shared";
 import type { SetOptions } from "@serialport/bindings-interface";
 import * as os from "node:os";
 import { setTimeout as sleep } from "node:timers/promises";
@@ -51,8 +51,6 @@ export function rs485(path: string, options: RS485Options = {}): DriverFactory {
   const { interval = 30 } = options;
 
   return (universe) => {
-    const lock = createAsyncLock();
-
     const port = new SerialPort({
       path,
       baudRate: 250000,
@@ -65,13 +63,15 @@ export function rs485(path: string, options: RS485Options = {}): DriverFactory {
       port.set(options, callback)
     );
 
+    let isWriting = false;
+
     const commit = async () => {
       await set({ brk: true, rts: true });
       await sleep(1); // MAB Duration
       await set({ brk: false, rts: true });
 
       // prettier-ignore
-      const joined = Buffer.concat([  
+      const joined = Buffer.concat([ 
         Buffer.from([0]),
         universe,
       ]);
@@ -83,7 +83,19 @@ export function rs485(path: string, options: RS485Options = {}): DriverFactory {
     };
 
     const timer = setIntervalAsync(async () => {
-      await lock.run(commit);
+      if (isWriting) {
+        return;
+      }
+
+      isWriting = true;
+
+      try {
+        await commit();
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        isWriting = false;
+      }
     }, interval);
 
     return {
