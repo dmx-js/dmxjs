@@ -1,9 +1,23 @@
+import {parentPort} from 'node:worker_threads';
+
 const TARGET_RUN_MS = 30;
 
 let lastRan = 0;
 
+function log(msg: string) {
+	if (!parentPort) {
+		console.log(msg);
+		// WTf to do here?
+		process.exit(-1);
+		return;
+	}
+
+	parentPort.postMessage(msg);
+	console.log(msg);
+}
+
 function run() {
-	console.log('I am running!');
+	log('I am running!');
 
 	// Synthetically wait for 10-20ms
 	const target = Date.now() + Math.floor(Math.random() * 10) + 10;
@@ -25,6 +39,6 @@ while (true) {
 
 		// diff until next run
 		// todo: send the break signal
-		console.log(`Run took ${runTook}ms, waiting for ${diff}ms`);
+		log(`Run took ${runTook}ms, waiting for ${diff}ms`);
 	}
 }
