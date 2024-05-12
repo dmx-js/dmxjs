@@ -94,4 +94,6 @@ export function matchLiteral<
 	throw new Error('No default value specified');
 }
 
+export type FrameLike = [number, ...number[]];
+
 export * from './color';
