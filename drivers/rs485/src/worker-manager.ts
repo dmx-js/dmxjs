@@ -12,17 +12,25 @@ export function createRs485Worker(path: string) {
 	// Print all stderr from the worker
 	worker.stderr.pipe(process.stderr);
 
-	return {
-		set: (channel: number, value: number) => {
-			worker.postMessage({type: 'set', channel, value});
-		},
+	worker.on('error', error => {
+		console.error('Worker error:', error);
+	});
 
-		get: (channel: number) => {
-			worker.postMessage({type: 'get', channel});
-		},
+	worker.on('message', message => {
+		console.log('Worker message:', message);
+	});
 
-		stop: () => {
-			worker.postMessage({type: 'stop'});
-		},
-	};
+	worker.on('exit', code => {
+		if (code !== 0) {
+			console.error('Worker stopped with exit code', code);
+		}
+	});
+
+	// This is a bit of a hack to keep the worker running
+	// until the main thread is done. In a real application,
+	// you'd want to have a way to signal to the worker that
+	// it should stop.
+	process.on('exit', () => {
+		void worker.terminate();
+	});
 }

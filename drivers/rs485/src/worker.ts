@@ -2,6 +2,17 @@ const TARGET_RUN_MS = 30;
 
 let lastRan = 0;
 
+function run() {
+	console.log('I am running!');
+
+	// Synthetically wait for 10-20ms
+	const target = Date.now() + Math.floor(Math.random() * 10) + 10;
+
+	while (Date.now() < target) {
+		// Do nothing
+	}
+}
+
 while (true) {
 	const now = Date.now();
 
@@ -15,16 +26,5 @@ while (true) {
 		// diff until next run
 		// todo: send the break signal
 		console.log(`Run took ${runTook}ms, waiting for ${diff}ms`);
-	}
-}
-
-function run() {
-	console.log('I am running!');
-
-	// Synthetically wait for 10-20ms
-	const target = Date.now() + Math.floor(Math.random() * 10) + 10;
-
-	while (Date.now() < target) {
-		// Do nothing
 	}
 }
