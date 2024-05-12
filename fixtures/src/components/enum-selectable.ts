@@ -7,10 +7,16 @@ import type {FrameLike} from '@dmxjs/shared';
  * in a larger list. In that case, you can still use this to represent the last-mile state,
  * using a wider option pool.
  */
-export interface EnumSelectable<Frame extends FrameLike, Options extends string> {
-	setOption(frame: Frame, option: Options): void;
+export interface EnumSelectable<
+	Frame extends FrameLike,
+	Options extends {[key in number]: string},
+> {
+	setOption<K extends keyof Options>(frame: Frame, channel: K, option: Options[K]): void;
 }
 
-export interface MultiEnumSelectable<Frame extends FrameLike, Option extends string> {
-	setOptions(frame: Frame, options: Option[]): void;
+export interface MultiEnumSelectable<
+	Frame extends FrameLike,
+	Options extends Record<string, string[]>,
+> {
+	setOptions<K extends keyof Options>(frame: Frame, channel: K, options: Options[K]): void;
 }
