@@ -1,16 +1,14 @@
 import * as worker_threads from 'node:worker_threads';
 
 export function createRs485Worker(path: string) {
+	console.log('Creating worker');
 	const worker = new worker_threads.Worker(new URL('./worker.ts', import.meta.url).pathname, {
 		workerData: {
 			path,
 		},
+		stdout: true,
+		stderr: true,
 	});
-
-	// Print all stdout from the worker
-	worker.stdout.pipe(process.stdout);
-	// Print all stderr from the worker
-	worker.stderr.pipe(process.stderr);
 
 	worker.on('error', error => {
 		console.error('Worker error:', error);
@@ -33,4 +31,6 @@ export function createRs485Worker(path: string) {
 	process.on('exit', () => {
 		void worker.terminate();
 	});
+
+	console.log('Worker created');
 }

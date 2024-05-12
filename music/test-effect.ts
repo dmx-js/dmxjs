@@ -1,5 +1,5 @@
 import {MiniKintaILS} from '@dmxjs/fixtures';
-import {Energy, type MusicContext} from './src';
+import {type MusicContext} from './src';
 import {Color} from '@dmxjs/shared';
 
 export class MiniKintaILSDownBeatFlash extends MiniKintaILS<MusicContext> {
@@ -9,7 +9,7 @@ export class MiniKintaILSDownBeatFlash extends MiniKintaILS<MusicContext> {
 		const color = new Color(0, 255, 0);
 		this.setColor(frame, color);
 
-		console.log(Energy[ctx.energy]);
+		// console.log(Energy[ctx.energy]);
 
 		// Create a sine wave based on the beat in the song as the speed
 		// \frac{\left(\sin\left(\frac{x}{5-\left(z-1\right)}\right)+1\right)}{2}
@@ -18,7 +18,7 @@ export class MiniKintaILSDownBeatFlash extends MiniKintaILS<MusicContext> {
 		// const index = Math.floor(speed * 126);
 		this.setMotorSpeed(frame, speed);
 
-		console.log(speed);
+		// console.log(speed);
 
 		return this.toBuffer(frame);
 	}
