@@ -2,7 +2,7 @@ import * as worker_threads from 'node:worker_threads';
 
 export function createRs485Worker(path: string) {
 	console.log('Creating worker');
-	const worker = new worker_threads.Worker(new URL('./worker.ts', import.meta.url).pathname, {
+	const worker = new worker_threads.Worker(new URL('./worker.js', import.meta.url).pathname, {
 		workerData: {
 			path,
 		},
