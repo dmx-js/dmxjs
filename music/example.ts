@@ -27,7 +27,7 @@ const timer = setInterval(() => {
     beatInSong: beat + 1,
     measure: Math.floor(beat / 4),
     energy,
-    bpm: 120,
+    bpm,
   });
 }, 60_000 / bpm);
 
