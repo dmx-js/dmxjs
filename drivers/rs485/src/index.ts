@@ -1,7 +1,6 @@
-import { type DriverFactory } from "@dmxjs/shared";
+import { sleep, type DriverFactory } from "@dmxjs/shared";
 import type { SetOptions } from "@serialport/bindings-interface";
 import * as os from "node:os";
-import { setTimeout as sleep } from "node:timers/promises";
 import { SerialPort } from "serialport";
 import { clearIntervalAsync, setIntervalAsync } from "set-interval-async";
 import { promisify } from "util";

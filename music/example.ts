@@ -1,6 +1,6 @@
 import { create } from "@dmxjs/core";
 import { autodetect, rs485 } from "@dmxjs/driver-rs485";
-import { setTimeout as sleep } from "node:timers/promises";
+import { sleep } from "@dmxjs/shared";
 import { add as unload } from "unload";
 
 import { Controller, Fixtures } from "./src/index.ts";

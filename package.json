@@ -8,7 +8,8 @@
     "./shared",
     "./example",
     "./fixtures",
-    "./music"
+    "./music",
+    "./prolink"
   ],
   "scripts": {
     "dev": "turbo dev",
