@@ -45,7 +45,7 @@ export class Controller {
 	private startLoop() {
 		setInterval(() => {
 			this.render();
-		}, 1000 / 60); // 60fps
+		}, 30); // 60fps
 	}
 
 	private render() {

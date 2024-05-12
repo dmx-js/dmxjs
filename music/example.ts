@@ -11,7 +11,7 @@ console.log('Using path', path);
 
 const dmx = create(
 	rs485(path, {
-		interval: 1000 / 60,
+		interval: 30,
 	}),
 );
 
