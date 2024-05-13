@@ -19,7 +19,7 @@ function log(msg: string) {
 
 const {path: usbPath, universeBuffer} = workerData as {
 	path: string;
-	universeBuffer: SharedArrayBuffer;
+	universeBuffer: Int32Array;
 };
 log(universeBuffer.constructor.name);
 if (!usbPath) {

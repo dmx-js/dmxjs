@@ -5,7 +5,8 @@ export function createRs485Worker(path: string) {
 	console.log('Creating worker');
 	// Create the shared buffer
 	const universeSharedBuffer = new SharedArrayBuffer(UNIVERSE_SIZE);
-	const universeBuffer = new Uint8Array(universeSharedBuffer);
+	// Use a dataview to use an int32 array to store the uint8 array
+	const universeBuffer = new Int32Array(universeSharedBuffer);
 
 	const worker = new worker_threads.Worker(new URL('./worker.js', import.meta.url).pathname, {
 		workerData: {
