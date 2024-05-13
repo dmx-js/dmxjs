@@ -41,8 +41,11 @@ function run() {
 	// Copy the shared buffer to a new buffer
 	// const universe = Buffer.from(universeBuffer);
 
+	const buf = Buffer.from(universeBuffer);
+	log(`buf: ${buf.toString('hex')}`);
+
 	port.write(Buffer.from([0]), 'binary');
-	port.write(Buffer.from(universeBuffer), 'binary');
+	port.write(buf, 'binary');
 	port.drain();
 }
 
