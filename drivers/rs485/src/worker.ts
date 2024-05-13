@@ -42,12 +42,8 @@ async function run() {
 	// Copy the shared buffer to a new buffer
 	// const universe = Buffer.from(universeBuffer);
 
-	log(`ub: ${universeBuffer.toString()}`);
-	const buf = Buffer.from(universeBuffer);
-	log(`buf: ${buf.toString('hex')}`);
-
 	port.write(Buffer.from([0]), 'binary');
-	port.write(buf, 'binary');
+	port.write(universeBuffer, 'binary');
 	await new Promise(res => port.drain(res));
 }
 
