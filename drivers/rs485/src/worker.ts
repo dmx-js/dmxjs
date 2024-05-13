@@ -21,6 +21,7 @@ const {path: usbPath, universeBuffer} = workerData as {
 	path: string;
 	universeBuffer: SharedArrayBuffer;
 };
+log(universeBuffer.constructor.name);
 if (!usbPath) {
 	throw new Error("No 'path' provided in workerData");
 }

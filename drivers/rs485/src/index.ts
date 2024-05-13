@@ -49,8 +49,7 @@ export function rs485(path: string, _options: RS485Options = {}): DriverFactory 
 
 	return buffer => {
 		// Write the buffer to the shared buffer
-		const universe = new Uint8Array(sharedBuffer);
-		universe.set(buffer);
+		sharedBuffer.set(buffer);
 
 		return {
 			stop: async () => {

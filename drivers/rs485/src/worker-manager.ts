@@ -4,7 +4,8 @@ import {UNIVERSE_SIZE} from '@dmxjs/shared';
 export function createRs485Worker(path: string) {
 	console.log('Creating worker');
 	// Create the shared buffer
-	const universeBuffer = new SharedArrayBuffer(UNIVERSE_SIZE);
+	const universeSharedBuffer = new SharedArrayBuffer(UNIVERSE_SIZE);
+	const universeBuffer = new Uint8Array(universeSharedBuffer);
 
 	const worker = new worker_threads.Worker(new URL('./worker.js', import.meta.url).pathname, {
 		workerData: {
