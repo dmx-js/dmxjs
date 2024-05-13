@@ -19,7 +19,7 @@ function log(msg: string) {
 
 const {path: usbPath, universeBuffer} = workerData as {
 	path: string;
-	universeBuffer: Int32Array;
+	universeBuffer: Uint8Array;
 };
 log(universeBuffer.constructor.name);
 if (!usbPath) {
@@ -42,6 +42,7 @@ async function run() {
 	// Copy the shared buffer to a new buffer
 	// const universe = Buffer.from(universeBuffer);
 
+	log(`ub: ${universeBuffer.toString()}`);
 	const buf = Buffer.from(universeBuffer);
 	log(`buf: ${buf.toString('hex')}`);
 

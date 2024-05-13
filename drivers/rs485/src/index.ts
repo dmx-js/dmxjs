@@ -47,11 +47,14 @@ export async function autodetect(): Promise<string> {
 export function rs485(path: string, _options: RS485Options = {}): DriverFactory {
 	const sharedBuffer = createRs485Worker(path);
 
+	// We have an int32 array, but we want to store a uint8 array
+	// in the shared buffer. We can use a DataView to do this.
+
 	return buffer => {
 		// Write the buffer to the shared buffer
 		console.log('SETTING BUFFER');
 		sharedBuffer.set(buffer);
-		Atomics.notify(sharedBuffer, 0, 512);
+		console.log('BUFFER SET');
 
 		return {
 			stop: async () => {
