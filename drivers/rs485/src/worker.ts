@@ -33,7 +33,7 @@ const port = new SerialPort({
 	parity: 'none',
 });
 
-function run() {
+async function run() {
 	log('I am running!');
 
 	// Read from the shared buffer
@@ -46,7 +46,7 @@ function run() {
 
 	port.write(Buffer.from([0]), 'binary');
 	port.write(buf, 'binary');
-	port.drain();
+	await new Promise(res => port.drain(res));
 }
 
 while (true) {
@@ -54,14 +54,14 @@ while (true) {
 
 	if (now - lastRan >= TARGET_RUN_MS) {
 		lastRan = now;
-		port.set({brk: false, rts: true});
-		run();
+		await new Promise(res => port.set({brk: false, rts: true}, res));
+		await run();
 		const after = Date.now();
 		const runTook = after - now;
 		const diff = TARGET_RUN_MS - runTook;
 
 		// diff until next run
-		port.set({brk: true, rts: true});
+		await new Promise(res => port.set({brk: true, rts: true}, res));
 		log(`Run took ${runTook}ms, waiting for ${diff}ms`);
 	}
 }
