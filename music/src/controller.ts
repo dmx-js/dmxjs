@@ -43,6 +43,7 @@ export class Controller {
 	}
 
 	private startLoop() {
+		console.log('Starting loop!');
 		setInterval(() => {
 			this.render();
 		}, 30); // 60fps
@@ -53,6 +54,8 @@ export class Controller {
 			return; // No context yet, we don't want to start rendering
 		}
 
+		console.log('Rendering!');
+
 		const context = this.context;
 
 		// TODO: figure out the most efficient way to do all this
@@ -62,5 +65,7 @@ export class Controller {
 		for (let i = 0; i < concatenated.length; i++) {
 			this.universe.set(i + 1, concatenated[i]!);
 		}
+
+		console.log('Rendered!');
 	}
 }
