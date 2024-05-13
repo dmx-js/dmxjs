@@ -42,7 +42,7 @@ function run() {
 	// const universe = Buffer.from(universeBuffer);
 
 	port.write(Buffer.from([0]), 'binary');
-	port.write(universeBuffer, 'binary');
+	port.write(Buffer.from(universeBuffer), 'binary');
 	port.drain();
 }
 
