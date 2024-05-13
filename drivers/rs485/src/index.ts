@@ -1,10 +1,6 @@
 import {type DriverFactory} from '@dmxjs/shared';
-import type {SetOptions} from '@serialport/bindings-interface';
 import * as os from 'node:os';
-import {setTimeout as sleep} from 'node:timers/promises';
 import {SerialPort} from 'serialport';
-import {clearIntervalAsync, setIntervalAsync} from 'set-interval-async';
-import {promisify} from 'util';
 import {createRs485Worker} from './worker-manager.ts';
 
 export interface RS485Options {
@@ -48,63 +44,71 @@ export async function autodetect(): Promise<string> {
  * @param options The options for the driver
  * @returns A driver factory
  */
-export function rs485(path: string, options: RS485Options = {}): DriverFactory {
-	createRs485Worker(path);
+export function rs485(path: string, _options: RS485Options = {}): DriverFactory {
+	const sharedBuffer = createRs485Worker(path);
 
-	const {interval = 30} = options;
-
-	return universe => {
-		const port = new SerialPort({
-			path,
-			baudRate: 250000,
-			dataBits: 8,
-			stopBits: 2,
-			parity: 'none',
-		});
-
-		const set = promisify((options: SetOptions, callback: () => void) =>
-			port.set(options, callback),
-		);
-
-		let isWriting = false;
-
-		const commit = async () => {
-			await set({brk: true, rts: true});
-			await sleep(1); // MAB Duration
-			await set({brk: false, rts: true});
-
-			// prettier-ignore
-			const joined = Buffer.concat([ 
-        Buffer.from([0]),
-        universe,
-      ]);
-
-			return new Promise<void>(resolve => {
-				port.write(joined, 'binary');
-				port.drain(() => resolve());
-			});
-		};
-
-		const timer = setIntervalAsync(async () => {
-			if (isWriting) {
-				return;
-			}
-
-			isWriting = true;
-
-			try {
-				await commit();
-			} catch (e) {
-				console.warn(e);
-			} finally {
-				isWriting = false;
-			}
-		}, interval);
+	return buffer => {
+		// Write the buffer to the shared buffer
+		const universe = new Uint8Array(sharedBuffer);
+		universe.set(buffer);
 
 		return {
 			stop: async () => {
-				await clearIntervalAsync(timer);
+				console.log('todo clean up this shit!');
 			},
 		};
 	};
+
+	// const {interval = 30} = options;
+
+	// return universe => {
+	// 	const port = new SerialPort({
+	// 		path,
+	// 		baudRate: 250000,
+	// 		dataBits: 8,
+	// 		stopBits: 2,
+	// 		parity: 'none',
+	// 	});
+	//
+	// 	const set = promisify((options: SetOptions, callback: () => void) =>
+	// 		port.set(options, callback),
+	// 	);
+	//
+	// 	let isWriting = false;
+	//
+	// 	const commit = async () => {
+	// 		await set({brk: true, rts: true});
+	// 		await sleep(1); // MAB Duration
+	// 		await set({brk: false, rts: true});
+	//
+	// 		const joined = Buffer.concat([Buffer.from([0]), universe]);
+	//
+	// 		return new Promise<void>(resolve => {
+	// 			port.write(joined, 'binary');
+	// 			port.drain(() => resolve());
+	// 		});
+	// 	};
+	//
+	// 	const timer = setIntervalAsync(async () => {
+	// 		if (isWriting) {
+	// 			return;
+	// 		}
+	//
+	// 		isWriting = true;
+	//
+	// 		try {
+	// 			await commit();
+	// 		} catch (e) {
+	// 			console.warn(e);
+	// 		} finally {
+	// 			isWriting = false;
+	// 		}
+	// 	}, interval);
+	//
+	// 	return {
+	// 		stop: async () => {
+	// 			await clearIntervalAsync(timer);
+	// 		},
+	// 	};
+	// };
 }

@@ -1,10 +1,15 @@
 import * as worker_threads from 'node:worker_threads';
+import {UNIVERSE_SIZE} from '@dmxjs/shared';
 
 export function createRs485Worker(path: string) {
 	console.log('Creating worker');
+	// Create the shared buffer
+	const universeBuffer = new SharedArrayBuffer(UNIVERSE_SIZE);
+
 	const worker = new worker_threads.Worker(new URL('./worker.js', import.meta.url).pathname, {
 		workerData: {
 			path,
+			universeBuffer,
 		},
 		stdout: true,
 		stderr: true,
@@ -37,4 +42,6 @@ export function createRs485Worker(path: string) {
 	});
 
 	console.log('Worker created');
+
+	return universeBuffer;
 }
