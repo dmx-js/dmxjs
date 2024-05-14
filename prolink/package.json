@@ -12,6 +12,10 @@
 		"@dmxjs/shared": "workspace:^"
 	},
 	"devDependencies": {
+		"@dmxjs/music": "workspace:^",
 		"tsup": "^8.0.2"
+	},
+	"peerDependencies": {
+		"@dmxjs/music": "workspace:^"
 	}
 }

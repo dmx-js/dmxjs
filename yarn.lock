@@ -334,7 +334,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@dmxjs/music@workspace:music":
+"@dmxjs/music@workspace:^, @dmxjs/music@workspace:music":
   version: 0.0.0-use.local
   resolution: "@dmxjs/music@workspace:music"
   dependencies:
@@ -377,9 +377,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@dmxjs/prolink@workspace:prolink"
   dependencies:
+    "@dmxjs/music": "workspace:^"
     "@dmxjs/prolink-connect": "npm:^0.11.1"
     "@dmxjs/shared": "workspace:^"
     tsup: "npm:^8.0.2"
+  peerDependencies:
+    "@dmxjs/music": "workspace:^"
   languageName: unknown
   linkType: soft
 
