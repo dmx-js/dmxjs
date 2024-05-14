@@ -2,7 +2,8 @@ import type {UniverseController} from '@dmxjs/core';
 import type {Fixture} from '@dmxjs/fixtures';
 import type {ConnectedProlinkNetwork} from '@dmxjs/prolink-connect';
 import {UNIVERSE_SIZE, type FrameLike} from '@dmxjs/shared';
-import type {PLContext} from './context.ts';
+import {Energy, type PLContext} from './context.ts';
+import {PhraseStore} from './phrase-store.ts';
 
 export class ProLinkController {
 	private readonly universe: UniverseController;
@@ -11,6 +12,8 @@ export class ProLinkController {
 
 	private timer: ReturnType<typeof setInterval> | null = null;
 	private currentContext: PLContext | null = null;
+
+	private readonly phraseStore: PhraseStore;
 
 	private static isValidFixtureWidth(fixtures: readonly Fixture<PLContext, FrameLike>[]) {
 		const channelCount = fixtures.reduce((acc, fixture) => acc + fixture.channels, 0);
@@ -32,7 +35,13 @@ export class ProLinkController {
 		this.fixtures = fixtures;
 		this.network = network;
 
+		this.phraseStore = new PhraseStore(network);
+
 		this.startLoop();
+	}
+
+	public getPhraseStore() {
+		return this.phraseStore;
 	}
 
 	public startLoop() {
@@ -44,20 +53,24 @@ export class ProLinkController {
 			this.render();
 		}, 30);
 
-		this.network.statusEmitter.on('status', status => {
-			if (status.trackBPM === null) {
+		this.network.statusEmitter.on('status', async status => {
+			if (status.trackBPM === null || status.beat === null) {
 				return;
 			}
 
+			// Maybe change this, but for now we only want to
+			// listen to the master track
 			if (!status.isMaster) {
 				return;
 			}
 
-			console.log(status);
-
 			this.currentContext = {
 				bpm: status.trackBPM,
 				beatInMeasure: status.beatInMeasure,
+				beatInSong: status.beat,
+
+				// TODO: Figure out how to read this
+				energy: Energy.MEDIUM,
 			};
 		});
 	}
