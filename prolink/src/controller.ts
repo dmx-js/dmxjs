@@ -14,7 +14,7 @@ export class ProLinkController {
 
 	private static isValidFixtureWidth(fixtures: readonly Fixture<PLContext, FrameLike>[]) {
 		const channelCount = fixtures.reduce((acc, fixture) => acc + fixture.channels, 0);
-		return channelCount > UNIVERSE_SIZE;
+		return channelCount <= UNIVERSE_SIZE;
 	}
 
 	public constructor(options: {
@@ -49,8 +49,15 @@ export class ProLinkController {
 				return;
 			}
 
+			if (!status.isMaster) {
+				return;
+			}
+
+			console.log(status);
+
 			this.currentContext = {
 				bpm: status.trackBPM,
+				beatInMeasure: status.beatInMeasure,
 			};
 		});
 	}
@@ -70,8 +77,7 @@ export class ProLinkController {
 			return;
 		}
 
-		const states = this.fixtures.map(fixture => fixture.render(context));
-		const concatenated = Buffer.concat(states);
+		const concatenated = Buffer.concat(this.fixtures.map(fixture => fixture.render(context)));
 
 		this.universe.tx(handle => {
 			for (let i = 0; i < concatenated.length; i++) {
