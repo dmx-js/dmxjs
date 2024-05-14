@@ -4,7 +4,7 @@ import {setTimeout as sleep} from 'node:timers/promises';
 import {add as unload} from 'unload';
 
 import {Controller} from './src';
-import {MiniKintaILSDownBeatFlash} from './test-effect.ts';
+import {EasyDancingTestEffect} from './test-effect.ts';
 
 const path = await autodetect();
 console.log('Using path', path);
@@ -15,7 +15,7 @@ const dmx = create(
 	}),
 );
 
-const controller = new Controller(dmx, [new MiniKintaILSDownBeatFlash()]);
+const controller = new Controller(dmx, [new EasyDancingTestEffect()]);
 
 const bpm = 130;
 
