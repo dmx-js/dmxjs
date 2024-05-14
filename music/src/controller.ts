@@ -1,62 +1,82 @@
 import type {UniverseController} from '@dmxjs/core';
-import {UNIVERSE_SIZE} from '@dmxjs/shared';
-import {DynamicFixture, type FixtureEvents} from './fixture';
 import type {Fixture} from '@dmxjs/fixtures';
+import {UNIVERSE_SIZE, type FrameLike} from '@dmxjs/shared';
+import {DynamicFixture, type FixtureEvents} from './fixture.ts';
 import type {MusicContext} from './music-context.ts';
 
-export class Controller {
+export class MusicController {
 	private readonly universe: UniverseController;
-
+	private readonly fixtures: readonly Fixture<MusicContext, FrameLike>[];
 	private context: MusicContext | null;
+
+	private timer: ReturnType<typeof setInterval> | null = null;
+
+	private static isValidFixtureWidth(fixtures: readonly Fixture<MusicContext, FrameLike>[]) {
+		const channelCount = fixtures.reduce((acc, fixture) => acc + fixture.channels, 0);
+		return channelCount > UNIVERSE_SIZE;
+	}
 
 	public constructor(
 		universe: UniverseController,
-		public readonly fixtures: readonly Fixture<MusicContext, any>[],
+		fixtures: readonly Fixture<MusicContext, FrameLike>[],
 	) {
-		this.universe = universe;
-		this.context = null;
-
-		const channelCount = fixtures.reduce((acc, fixture) => acc + fixture.channels, 0);
-		if (channelCount > UNIVERSE_SIZE) {
+		if (!MusicController.isValidFixtureWidth(fixtures)) {
 			throw new Error('Too many channels specified for universe size');
 		}
+
+		this.context = null;
+		this.universe = universe;
+		this.fixtures = fixtures;
 
 		this.startLoop();
 	}
 
-	emit<K extends keyof FixtureEvents>(key: K, ...args: FixtureEvents[K]) {
-		for (const fixture of this.fixtures) {
-			if (fixture instanceof DynamicFixture) {
-				fixture.emit(key, ...args);
+	public emit<K extends keyof FixtureEvents>(key: K, ...args: FixtureEvents[K]) {
+		switch (key) {
+			case 'beat': {
+				const [context] = args;
+
+				for (const fixture of this.fixtures) {
+					if (fixture instanceof DynamicFixture) {
+						fixture.emit(key, context);
+					}
+				}
+
+				this.context = context;
+
+				// Start the loop if it's not already running
+				this.startLoop();
+
+				break;
 			}
 		}
-
-		this.context = args[0];
-
-		// const states = this.fixtures.map(fixture => fixture.render(args[0]));
-		//
-		// const concatenated = Buffer.concat(states);
-		//
-		// for (let i = 0; i < concatenated.length; i++) {
-		// 	this.universe.set(i + 1, concatenated[i]!);
-		// }
 	}
 
-	private startLoop() {
-		console.log('Starting loop!');
-		setInterval(() => {
+	public startLoop() {
+		if (this.timer) {
+			return;
+		}
+
+		this.timer = setInterval(() => {
 			this.render();
 		}, 30);
 	}
 
-	private render() {
-		if (!this.context) {
-			return; // No context yet, we don't want to start rendering
+	public stopLoop() {
+		if (this.timer) {
+			clearInterval(this.timer);
+			this.timer = null;
 		}
+	}
 
+	private render() {
 		const context = this.context;
 
-		// TODO: figure out the most efficient way to do all this
+		if (!context) {
+			// No context yet, we don't want to start rendering
+			return;
+		}
+
 		const states = this.fixtures.map(fixture => fixture.render(context));
 		const concatenated = Buffer.concat(states);
 
