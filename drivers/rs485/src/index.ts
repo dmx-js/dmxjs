@@ -52,9 +52,7 @@ export function rs485(path: string, _options: RS485Options = {}): DriverFactory 
 
 	return buffer => {
 		// Write the buffer to the shared buffer
-		console.log('SETTING BUFFER');
 		sharedBuffer.set(buffer);
-		console.log('BUFFER SET');
 
 		return {
 			stop: async () => {

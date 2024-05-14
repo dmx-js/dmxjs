@@ -35,8 +35,6 @@ const port = new SerialPort({
 });
 
 async function run() {
-	log('I am running!');
-
 	// Read from the shared buffer
 
 	// Copy the shared buffer to a new buffer
@@ -54,12 +52,11 @@ while (true) {
 		lastRan = now;
 		await new Promise(res => port.set({brk: false, rts: true}, res));
 		await run();
-		const after = Date.now();
-		const runTook = after - now;
-		const diff = TARGET_RUN_MS - runTook;
+		// const after = Date.now();
+		// const runTook = after - now;
+		// const diff = TARGET_RUN_MS - runTook;
 
 		// diff until next run
 		await new Promise(res => port.set({brk: true, rts: true}, res));
-		log(`Run took ${runTook}ms, waiting for ${diff}ms`);
 	}
 }
