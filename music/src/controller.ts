@@ -1,7 +1,7 @@
 import type {UniverseController} from '@dmxjs/core';
-import {UNIVERSE_SIZE} from '@dmxjs/shared';
-import {DynamicFixture, type FixtureEvents} from './fixture';
 import type {Fixture} from '@dmxjs/fixtures';
+import {UNIVERSE_SIZE} from '@dmxjs/shared';
+import {DynamicFixture, type FixtureEvents} from './fixture.ts';
 import type {MusicContext} from './music-context.ts';
 
 export class Controller {
