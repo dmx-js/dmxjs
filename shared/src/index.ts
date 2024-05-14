@@ -1,7 +1,9 @@
 export type Universe = Buffer;
 
-export type DriverFactory = (universe: Universe) => Driver;
+export type DriverFactory = () => Driver;
+
 export type Driver = {
+	commit: (universe: Universe) => void;
 	stop: () => Promise<void>;
 };
 
@@ -107,4 +109,4 @@ export function matchLiteral<
 
 export type FrameLike = [number, ...number[]];
 
-export * from './color';
+export * from './color.ts';

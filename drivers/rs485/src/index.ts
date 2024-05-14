@@ -1,7 +1,7 @@
 import {type DriverFactory} from '@dmxjs/shared';
 import * as os from 'node:os';
 import {SerialPort} from 'serialport';
-import {createRs485Worker} from './worker-manager.ts';
+import {createRS485Worker} from './worker-manager.ts';
 
 export interface RS485Options {
 	/**
@@ -45,72 +45,16 @@ export async function autodetect(): Promise<string> {
  * @returns A driver factory
  */
 export function rs485(path: string, _options: RS485Options = {}): DriverFactory {
-	const sharedBuffer = createRs485Worker(path);
+	const {setUniverseBuffer, stop} = createRS485Worker(path);
 
-	// We have an int32 array, but we want to store a uint8 array
-	// in the shared buffer. We can use a DataView to do this.
-
-	return buffer => {
-		// Write the buffer to the shared buffer
-		sharedBuffer.set(buffer);
-
+	return () => {
 		return {
+			commit: buffer => {
+				setUniverseBuffer(buffer);
+			},
 			stop: async () => {
-				console.log('todo clean up this shit!');
+				stop();
 			},
 		};
 	};
-
-	// const {interval = 30} = options;
-
-	// return universe => {
-	// 	const port = new SerialPort({
-	// 		path,
-	// 		baudRate: 250000,
-	// 		dataBits: 8,
-	// 		stopBits: 2,
-	// 		parity: 'none',
-	// 	});
-	//
-	// 	const set = promisify((options: SetOptions, callback: () => void) =>
-	// 		port.set(options, callback),
-	// 	);
-	//
-	// 	let isWriting = false;
-	//
-	// 	const commit = async () => {
-	// 		await set({brk: true, rts: true});
-	// 		await sleep(1); // MAB Duration
-	// 		await set({brk: false, rts: true});
-	//
-	// 		const joined = Buffer.concat([Buffer.from([0]), universe]);
-	//
-	// 		return new Promise<void>(resolve => {
-	// 			port.write(joined, 'binary');
-	// 			port.drain(() => resolve());
-	// 		});
-	// 	};
-	//
-	// 	const timer = setIntervalAsync(async () => {
-	// 		if (isWriting) {
-	// 			return;
-	// 		}
-	//
-	// 		isWriting = true;
-	//
-	// 		try {
-	// 			await commit();
-	// 		} catch (e) {
-	// 			console.warn(e);
-	// 		} finally {
-	// 			isWriting = false;
-	// 		}
-	// 	}, interval);
-	//
-	// 	return {
-	// 		stop: async () => {
-	// 			await clearIntervalAsync(timer);
-	// 		},
-	// 	};
-	// };
 }

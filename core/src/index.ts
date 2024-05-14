@@ -36,6 +36,8 @@ export interface UniverseController {
  * @returns A universe controller
  */
 export function create(factory: DriverFactory): UniverseController {
+	const driver = factory();
+
 	const universe = Buffer.alloc(UNIVERSE_SIZE, 0);
 
 	return {
@@ -43,6 +45,8 @@ export function create(factory: DriverFactory): UniverseController {
 			for (let i = 0; i <= UNIVERSE_SIZE; i++) {
 				universe[i] = value;
 			}
+
+			driver.commit(universe);
 		},
 
 		set: (channel: number, value: number) => {
@@ -56,8 +60,7 @@ export function create(factory: DriverFactory): UniverseController {
 
 			universe[channel - 1] = value;
 
-			/// TODO: SUPER TEMP !!!!
-			factory(universe);
+			driver.commit(universe);
 		},
 
 		get: (channel: number) => {
@@ -70,6 +73,8 @@ export function create(factory: DriverFactory): UniverseController {
 			return value;
 		},
 
-		stop: async () => {},
+		stop: async () => {
+			await driver.stop();
+		},
 	};
 }
