@@ -1,8 +1,13 @@
 {
-	"name": "@dmxjs/shared",
-	"version": "1.0.6",
+	"name": "@dmxjs/fixtures",
+	"version": "0.0.0",
 	"packageManager": "yarn@4.1.1",
 	"type": "module",
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"release": "yarn npm publish"
+	},
 	"publishConfig": {
 		"access": "public"
 	},
@@ -18,11 +23,6 @@
 		"package.json",
 		"README.md"
 	],
-	"scripts": {
-		"build": "tsup",
-		"dev": "tsup --watch",
-		"release": "yarn npm publish"
-	},
 	"devDependencies": {
 		"tsup": "^8.0.2",
 		"typescript": "^5.4.5"
