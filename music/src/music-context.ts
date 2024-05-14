@@ -6,17 +6,6 @@ export enum Energy {
 	BONKERS,
 }
 
-export enum ColorOverride {
-	RED = 1,
-	GREEN,
-	BLUE,
-	YELLOW,
-	CYAN,
-	MAGENTA,
-	WHITE,
-	BLACKOUT,
-}
-
 export interface MusicContext {
 	beatInMeasure: number;
 	beatInSong: number;
@@ -24,7 +13,6 @@ export interface MusicContext {
 	energy: Energy;
 	bpm: number;
 	lastBeatAt: number;
-	override?: ColorOverride;
 }
 
 /**

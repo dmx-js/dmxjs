@@ -45,8 +45,13 @@ export async function autoconfig(config: AutoconfigOptions = {}) {
 	return prolink(network);
 }
 
-export function prolink(network: ConnectedProlinkNetwork) {
+export function prolink(
+	network: ConnectedProlinkNetwork,
+	onContext: (context: MusicContext) => {
+		//
+	},
+) {
 	network.statusEmitter.on('status', d => {
-		console.log(d);
+		//
 	});
 }

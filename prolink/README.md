@@ -1,3 +1,3 @@
-# `@dmxjs/music`
+# `@dmxjs/prolink`
 
-A collection of utilities for controlling lighting and fx FROM music. For example for connecting DJ equipment. As long as you can provide the timing information, you can use this library.
+Utilities to connect to the Pioneer DJ ProLink network, that emits enough context for usage with `@dmxjs/music`. This allows you to build complex lighting systems that are time-synced to music playing from CDJs (and other ProLink compatible devices) really quickly.
