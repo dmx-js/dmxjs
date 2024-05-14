@@ -23,6 +23,7 @@ export interface MusicContext {
 	measure: number;
 	energy: Energy;
 	bpm: number;
+	lastBeatAt: number;
 	override?: ColorOverride;
 }
 

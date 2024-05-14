@@ -1,6 +1,7 @@
 import {parentPort, workerData} from 'node:worker_threads';
 import {SerialPort} from 'serialport';
 
+// 30ms
 const TARGET_RUN_MS = 30;
 
 let lastRan = 0;
@@ -40,6 +41,8 @@ async function run() {
 	// Copy the shared buffer to a new buffer
 	// const universe = Buffer.from(universeBuffer);
 
+	// log(`data: ${universeBuffer.toString()}`);
+
 	port.write(Buffer.from([0]), 'binary');
 	port.write(universeBuffer, 'binary');
 	await new Promise(res => port.drain(res));
@@ -50,6 +53,8 @@ while (true) {
 
 	if (now - lastRan >= TARGET_RUN_MS) {
 		lastRan = now;
+		await new Promise(res => port.set({brk: true, rts: true}, res));
+		await new Promise(res => setTimeout(res, 1)); //
 		await new Promise(res => port.set({brk: false, rts: true}, res));
 		await run();
 		// const after = Date.now();
@@ -57,6 +62,6 @@ while (true) {
 		// const diff = TARGET_RUN_MS - runTook;
 
 		// diff until next run
-		await new Promise(res => port.set({brk: true, rts: true}, res));
+
 	}
 }

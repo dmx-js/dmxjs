@@ -4,7 +4,8 @@ import {setTimeout as sleep} from 'node:timers/promises';
 import {add as unload} from 'unload';
 
 import {Controller} from './src';
-import {EasyDancingTestEffect} from './test-effect.ts';
+import {RandomLightEffect} from "./src/effects/random-light-effect.ts";
+import {StrobeInsanity} from "./src/effects/strobe-insanity.ts";
 
 const path = await autodetect();
 console.log('Using path', path);
@@ -15,7 +16,8 @@ const dmx = create(
 	}),
 );
 
-const controller = new Controller(dmx, [new EasyDancingTestEffect()]);
+// new EasyDancingTestEffect(1), new EasyDancingTestEffect(2), new EasyDancingTestEffect(3), new EasyDancingTestEffect(4)
+const controller = new Controller(dmx, [new StrobeInsanity(0), new StrobeInsanity(1), new StrobeInsanity(2), new StrobeInsanity(3)]);
 
 const bpm = 130;
 
@@ -33,6 +35,7 @@ const timer = setInterval(() => {
 		measure: Math.floor(beat / 4),
 		energy,
 		bpm,
+		lastBeatAt: Date.now(),
 	});
 }, 60_000 / bpm);
 
