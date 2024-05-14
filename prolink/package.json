@@ -5,17 +5,17 @@
 	"type": "module",
 	"scripts": {
 		"build": "tsup",
-		"dev": "tsup --watch"
+		"dev": "tsup --watch",
+		"example": "node --import tsx example.ts"
 	},
 	"dependencies": {
 		"@dmxjs/prolink-connect": "^0.11.1",
-		"@dmxjs/shared": "workspace:^"
+		"@dmxjs/shared": "workspace:^",
+		"colorette": "^2.0.20"
 	},
 	"devDependencies": {
-		"@dmxjs/music": "workspace:^",
-		"tsup": "^8.0.2"
-	},
-	"peerDependencies": {
-		"@dmxjs/music": "workspace:^"
+		"@dmxjs/driver-rs485": "workspace:^",
+		"tsup": "^8.0.2",
+		"tsx": "^4.10.2"
 	}
 }

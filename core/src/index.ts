@@ -25,6 +25,19 @@ export interface UniverseController {
 	get: (channel: number) => number;
 
 	/**
+	 * Call a function with a handle that WON'T
+	 * trigger a commit, but will commit after the
+	 * function is done
+	 * @param fn The function to call
+	 */
+	tx: (
+		fn: (handle: {
+			set: (channel: number, value: number) => void;
+			setAll: (value: number) => void;
+		}) => void,
+	) => void;
+
+	/**
 	 * Calls the `.stop()` method of a driver
 	 */
 	stop: () => Promise<void>;
@@ -71,6 +84,22 @@ export function create(factory: DriverFactory): UniverseController {
 			}
 
 			return value;
+		},
+
+		tx: fn => {
+			fn({
+				set: (channel, value) => {
+					universe[channel - 1] = value;
+				},
+
+				setAll: value => {
+					for (let i = 0; i <= UNIVERSE_SIZE; i++) {
+						universe[i] = value;
+					}
+				},
+			});
+
+			driver.commit(universe);
 		},
 
 		stop: async () => {
